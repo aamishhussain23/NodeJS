@@ -1,21 +1,22 @@
 const express = require('express')
+const path = require('path')
+const bodyParser = require('body-parser')
 
 const app = express()
-
 const port = 5000
+app.use(bodyParser.urlencoded({extended: false}))
+ 
 
 app.get('/', (req, resp) => {
-    resp.send('<h1>Home Page</h1>')
+    resp.sendFile(path.join(__dirname + '/index.html'))
 })
-app.get('/about', (req, resp) => {
-    resp.send('<h1>About Page</h1>')
+
+
+app.post('/info/form', (req, resp) => {
+    resp.send(`<h2>your name is : ${req.body.name}</br>your email is : ${req.body.email}</br>your password is : ${req.body.password}</h2>`)
+    console.log(req.body)
 })
-app.get('/contact', (req, resp) => {
-    resp.send('<h1>Contact Page</h1>')
-})
-app.get('*', (req, resp) => {
-    resp.send('<h1>404 ERROR</h1>')
-})
+
 
 
 app.listen(port, () => {
