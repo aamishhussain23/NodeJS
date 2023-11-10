@@ -6,7 +6,12 @@
     <title>EJS</title>
 </head>
 <body>
-    <h1>EJS</h1>
-    <h2>Hello <%=name%></h2>
+    <form action="/success" method="post">
+        <input type="text" placeholder="your name" name="name">
+        <br><br>
+        <input type="email" placeholder="your email" name="email">
+        <br><br>
+        <input type="submit" value="Sign Up">
+    </form>
 </body>
 </html>
