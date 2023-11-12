@@ -1,15 +1,31 @@
-const express = require('express')
+const mongoose = require('mongoose')
 
-const app = express()
-const port = 5000
+mongoose.connect('mongodb://127.0.0.1:27017/Product').then(() => {
+    console.log('mongoDB connected')
+})
+.catch(() => {
+    console.log('Not connected')
+})
 
-app.set('view engine', 'ejs')
-
-app.get('/', (req, resp) => {
-    resp.render('index', {name : 'AaMiSh'})
+const phone = new mongoose.Schema({
+    name : String,
+    price : Number,
+    status : Boolean
 })
 
 
-app.listen(port, () => {
-    console.log(`server is running on port ${port}`)
-})
+const mobile = new mongoose.model('phone', phone)
+
+const adder = async () => {
+    const result = await mobile.create({name : 'realme', price : 5500, status : true})
+    console.log(result)
+}
+
+
+const search = async () => {
+    const result = await mobile.find({price : {$eq : 36000}})
+    console.log(result)
+}
+
+// adder() 
+search() 
