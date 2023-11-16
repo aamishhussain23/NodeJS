@@ -1,31 +1,35 @@
+const express = require('express')
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://127.0.0.1:27017/Product').then(() => {
-    console.log('mongoDB connected')
-})
-.catch(() => {
-    console.log('Not connected')
-})
+const app = express()
+mongoose.connect('mongodb://127.0.0.1:27017/form').then( () => {
+    console.log('database connected')
+} ).catch( () => {
+    console.log('database not connected')
+} )
 
-const phone = new mongoose.Schema({
+// form schema
+const formSchema = new mongoose.Schema({
     name : String,
-    price : Number,
-    status : Boolean
+    email : String
 })
 
+const form = new mongoose.model('formInputs', formSchema)
 
-const mobile = new mongoose.model('phone', phone)
+app.set('view engine', 'ejs')
+app.use(bodyParser.urlencoded({extended: false}))
 
-const adder = async () => {
-    const result = await mobile.create({name : 'realme', price : 5500, status : true})
-    console.log(result)
-}
+app.get('/', (req, res) => {
+    res.render('index')
+})
 
+app.post('/login', (req, res) => {
+    res.redirect('/')
+    console.log(req.body)
+    form.create({name : req.body.userName, email : req.body.userEmail})
+})
 
-const search = async () => {
-    const result = await mobile.find({price : {$eq : 36000}})
-    console.log(result)
-}
-
-// adder() 
-search() 
+app.listen(3000, () => {
+    console.log('app is ready')
+})
